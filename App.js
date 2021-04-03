@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
   FlatList,
   Keyboard,
-  Alert,
-  AsyncStorage
+  Alert 
 } from 'react-native';
+import AsyncStorage from '../app1/node_modules/@react-native-community/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 
 
@@ -58,11 +58,23 @@ export default function App() {
   }
 
   useEffect(() => {
+    async function carregaDados(){
+      const task = await AsyncStorage.getItem("task");
+
+      if(task){
+        setTask(JSON.parse(task));
+      }
+    }
+    carregaDados();
+  },[])
+
+  useEffect(() => {
     async function dados() {
       AsyncStorage.setItem("task",JSON.stringify(task))
     }
     dados()
   }, [task])
+
   return (
     <>
       <View style={styles.container}>
